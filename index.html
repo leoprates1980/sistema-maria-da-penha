@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronda Maria da Penha - 29ª CIPM Seabra</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-container">
+                    <div class="logo-pmba">PMBA</div>
+                    <div class="unit-info">
+                        <h1>29ª CIPM Seabra</h1>
+                        <h2>Ronda Maria da Penha</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card__body">
+                    <h3 class="login-title">Acesso ao Sistema</h3>
+                    <form id="loginForm" class="login-form">
+                        <div class="form-group">
+                            <label for="username" class="form-label">Usuário</label>
+                            <input type="text" id="username" class="form-control" placeholder="Digite seu usuário" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" id="password" class="form-control" placeholder="Digite sua senha" required>
+                        </div>
+                        <div id="loginError" class="status status--error hidden">
+                            Usuário ou senha inválidos
+                        </div>
+                        <button type="submit" class="btn btn--primary btn--full-width">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aplicação Principal -->
+    <div id="mainApp" class="main-app hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-pmba-small">PMBA</div>
+                    <div class="header-title">
+                        <h1>29ª CIPM Seabra</h1>
+                        <span>Ronda Maria da Penha</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span class="user-info">Usuário: <strong id="currentUser"></strong></span>
+                    <button id="logoutBtn" class="btn btn--outline btn--sm">Sair</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="app-layout">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <ul class="nav-menu">
+                    <li><a href="#" class="nav-link active" data-section="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-section="cadastro">Cadastrar Medida</a></li>
+                    <li><a href="#" class="nav-link" data-section="consulta">Consultar Medidas</a></li>
+                    <li><a href="#" class="nav-link" data-section="acompanhamento">Acompanhamentos</a></li>
+                    <li><a href="#" class="nav-link" data-section="ocorrencias">Ocorrências</a></li>
+                    <li><a href="#" class="nav-link" data-section="relatorios">Relatórios</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Dashboard -->
+                <section id="dashboard" class="content-section active">
+                    <h2>Dashboard</h2>
+                    <div class="dashboard-stats">
+                        <div class="stat-card">
+                            <h3>Medidas Ativas</h3>
+                            <div class="stat-number" id="medidasAtivas">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Descumprimentos</h3>
+                            <div class="stat-number" id="descumprimentos">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Visitas Realizadas</h3>
+                            <div class="stat-number" id="visitasRealizadas">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total de Medidas</h3>
+                            <div class="stat-number" id="totalMedidas">0</div>
+                        </div>
+                    </div>
+                    <div class="dashboard-charts">
+                        <div class="chart-container">
+                            <h4>Distribuição por Status</h4>
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cadastro -->
+                <section id="cadastro" class="content-section">
+                    <h2>Cadastrar Nova Medida Protetiva</h2>
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="vitima">Dados da Vítima</button>
+                        <button class="tab-btn" data-tab="agressor">Dados do Agressor</button>
+                        <button class="tab-btn" data-tab="processo">Dados Processuais</button>
+                        <button class="tab-btn" data-tab="medidas">Tipos de Medidas</button>
+                    </div>
+                    
+                    <form id="cadastroForm" class="cadastro-form">
+                        <!-- Tab Vítima -->
+                        <div id="tab-vitima" class="tab-content active">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Nome Completo</label>
+                                    <input type="text" name="vitima_nome" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CPF</label>
+                                    <input type="text" name="vitima_cpf" class="form-control cpf-mask" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Telefone</label>
+                                    <input type="text" name="vitima_telefone" class="form-control phone-mask">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="vitima_email" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Endereço</label>
+                                <input type="text" name="vitima_endereco" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <!-- Tab Agressor -->
+                        <div id="tab-agressor" class="tab-content">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Nome Completo</label>
+                                    <input type="text" name="agressor_nome" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">CPF</label>
+                                    <input type="text" name="agressor_cpf" class="form-control cpf-mask" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Telefone</label>
+                                    <input type="text" name="agressor_telefone" class="form-control phone-mask">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Relacionamento com a Vítima</label>
+                                    <select name="relacionamento" class="form-control" required>
+                                        <option value="">Selecione...</option>
+                                        <option value="Cônjuge">Cônjuge</option>
+                                        <option value="Ex-cônjuge">Ex-cônjuge</option>
+                                        <option value="Companheiro">Companheiro</option>
+                                        <option value="Ex-companheiro">Ex-companheiro</option>
+                                        <option value="Namorado">Namorado</option>
+                                        <option value="Ex-namorado">Ex-namorado</option>
+                                        <option value="Outro">Outro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Endereço</label>
+                                <input type="text" name="agressor_endereco" class="form-control">
+                            </div>
+                        </div>
+
+                        <!-- Tab Processo -->
+                        <div id="tab-processo" class="tab-content">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Número do Processo</label>
+                                    <input type="text" name="numero_processo" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Data de Concessão</label>
+                                    <input type="date" name="data_concessao" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Juiz</label>
+                                    <input type="text" name="juiz" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Vara</label>
+                                    <input type="text" name="vara" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Medidas -->
+                        <div id="tab-medidas" class="tab-content">
+                            <div class="form-group">
+                                <label class="form-label">Tipos de Medidas Aplicadas</label>
+                                <div class="checkbox-group" id="tiposMedidas">
+                                    <!-- Será preenchido pelo JavaScript -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-control" required>
+                                    <option value="Ativa">Ativa</option>
+                                    <option value="Suspensa">Suspensa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn--primary">Salvar Medida</button>
+                            <button type="button" class="btn btn--secondary" id="cancelarCadastro">Cancelar</button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Consulta -->
+                <section id="consulta" class="content-section">
+                    <h2>Consultar Medidas Protetivas</h2>
+                    <div class="filters">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <input type="text" id="filtroNome" class="form-control" placeholder="Buscar por nome da vítima">
+                            </div>
+                            <div class="form-group">
+                                <select id="filtroStatus" class="form-control">
+                                    <option value="">Todos os status</option>
+                                    <option value="Ativa">Ativa</option>
+                                    <option value="Cumprida">Cumprida</option>
+                                    <option value="Descumprida">Descumprida</option>
+                                    <option value="Revogada">Revogada</option>
+                                    <option value="Suspensa">Suspensa</option>
+                                </select>
+                            </div>
+                            <button id="filtrarBtn" class="btn btn--primary">Filtrar</button>
+                        </div>
+                    </div>
+                    <div id="listaMedidas" class="medidas-list">
+                        <!-- Será preenchido pelo JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Acompanhamento -->
+                <section id="acompanhamento" class="content-section">
+                    <h2>Acompanhamentos e Visitas</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Selecionar Medida</label>
+                            <select id="medidaAcompanhamento" class="form-control">
+                                <option value="">Selecione uma medida...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <form id="acompanhamentoForm" class="acompanhamento-form hidden">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Data da Visita</label>
+                                <input type="date" name="data_visita" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tipo de Visita</label>
+                                <select name="tipo_visita" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Visita de acompanhamento">Visita de acompanhamento</option>
+                                    <option value="Visita de verificação">Visita de verificação</option>
+                                    <option value="Atendimento emergencial">Atendimento emergencial</option>
+                                    <option value="Visita não agendada">Visita não agendada</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Situação Encontrada</label>
+                            <textarea name="situacao" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Observações</label>
+                            <textarea name="observacoes" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary">Registrar Visita</button>
+                    </form>
+                    <div id="historicoVisitas" class="historico-visitas">
+                        <!-- Será preenchido pelo JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Ocorrências -->
+                <section id="ocorrencias" class="content-section">
+                    <h2>Ocorrências e Descumprimentos</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Selecionar Medida</label>
+                            <select id="medidaOcorrencia" class="form-control">
+                                <option value="">Selecione uma medida...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <form id="ocorrenciaForm" class="ocorrencia-form hidden">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Data da Ocorrência</label>
+                                <input type="date" name="data_ocorrencia" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tipo</label>
+                                <select name="tipo_ocorrencia" class="form-control" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="Descumprimento">Descumprimento</option>
+                                    <option value="Violação">Violação</option>
+                                    <option value="Ameaça">Ameaça</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Descrição da Ocorrência</label>
+                            <textarea name="descricao" class="form-control" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ações Tomadas</label>
+                            <textarea name="acoes_tomadas" class="form-control" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn--primary">Registrar Ocorrência</button>
+                    </form>
+                    <div id="historicoOcorrencias" class="historico-ocorrencias">
+                        <!-- Será preenchido pelo JavaScript -->
+                    </div>
+                </section>
+
+                <!-- Relatórios -->
+                <section id="relatorios" class="content-section">
+                    <h2>Relatórios</h2>
+                    <div class="reports-grid">
+                        <div class="report-card">
+                            <h4>Relatório Geral</h4>
+                            <p>Estatísticas completas do sistema</p>
+                            <button class="btn btn--primary" onclick="gerarRelatorioGeral()">Gerar</button>
+                        </div>
+                        <div class="report-card">
+                            <h4>Medidas por Período</h4>
+                            <div class="form-row">
+                                <input type="date" id="dataInicio" class="form-control">
+                                <input type="date" id="dataFim" class="form-control">
+                            </div>
+                            <button class="btn btn--primary" onclick="gerarRelatorioPeriodo()">Gerar</button>
+                        </div>
+                    </div>
+                    <div id="relatorioContent" class="relatorio-content">
+                        <!-- Conteúdo dos relatórios será exibido aqui -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="editModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Medida Protetiva</h3>
+                <button class="close-modal" onclick="fecharModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <!-- Será preenchido dinamicamente -->
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
